@@ -2,7 +2,7 @@ name: Deploy UI
 
 on:
   push:
-    branches: ["main"]
+    branches: ["master"]
     paths:
       - "ui/**"
       - "package.json"
