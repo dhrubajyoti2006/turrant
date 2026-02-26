@@ -39,9 +39,20 @@ jobs:
         run: npm ci
 
       - name: Build UI
-        env:
-          VITE_BASE_PATH: /${{ github.event.repository.name }}/
-        run: npm run build -w ui
+        run: |
+          REPO_NAME="${GITHUB_REPOSITORY#*/}"
+          if [[ "$REPO_NAME" == *.github.io ]]; then
+            export VITE_BASE_PATH="/"
+          else
+            export VITE_BASE_PATH="/${REPO_NAME}/"
+          fi
+          echo "Using VITE_BASE_PATH=${VITE_BASE_PATH}"
+          npm run build -w ui
+
+      - name: Add SPA fallback for GitHub Pages
+        run: |
+          cp ui/dist/index.html ui/dist/404.html
+          touch ui/dist/.nojekyll
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
