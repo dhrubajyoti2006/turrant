@@ -5,7 +5,7 @@ import { dataRouter } from "./controller/DataController";
 
 const app = express();
 app.use(cors()); // Enable CORS for all routes
-const port = 3000;
+const port = Number(process.env.PORT ?? 3000);
 
 app.use(express.json());
 
